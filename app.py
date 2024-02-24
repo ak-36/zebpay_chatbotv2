@@ -12,7 +12,7 @@ st.info("Your Guide to cryto-trading", icon="📃")
          
 if "messages" not in st.session_state.keys(): # Initialize the chat messages history
     st.session_state.messages = [
-        {"role": "assistant", "content": "Ask me a question about waste management!"}
+        {"role": "assistant", "content": "Ask me a question about cryptocurrencyt!"}
     ]
 
 @st.cache_resource(show_spinner=False)
