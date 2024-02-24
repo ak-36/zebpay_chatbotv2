@@ -28,7 +28,7 @@ index = load_data()
 
 if "chat_engine" not in st.session_state.keys(): # Initialize the chat engine
          memory = ChatMemoryBuffer.from_defaults(token_limit=15000)
-         st.session_state.chat_engine = index.as_chat_engine(chat_mode="context", memory=memory, system_prompt=""You are a customer support chatbot and an expert in cryptocurrency. If you do not find any answers to the question just say 'Connecting you to customer support'", verbose=True)
+         st.session_state.chat_engine = index.as_chat_engine(chat_mode="context", memory=memory, system_prompt="You are a customer support chatbot and an expert in cryptocurrency. If you do not find any answers to the question just say 'Connecting you to customer support'", verbose=True)
 
 if prompt := st.chat_input("Your question"): # Prompt for user input and save to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
