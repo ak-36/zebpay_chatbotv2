@@ -29,11 +29,12 @@ index = load_data()
 if "chat_engine" not in st.session_state.keys(): # Initialize the chat engine
          memory = ChatMemoryBuffer.from_defaults(token_limit=15000)
          st.session_state.chat_engine = index.as_chat_engine(chat_mode="context", memory=memory, system_prompt=(
-            "You are an assistant who is an expert in cryptocurrency and ZebPay services. "
-            "Keep your answers technical and based on facts. Do not hallucinate features. "
-            "If the user's query is not related to cryptocurrency or ZebPay, simply say 'Please ask something related to crypto or ZebPay!'."
-            "If the user's query is related but you cannot find an answer, simply say 'Connecting you with customer support'."
-            "If the user seems annoyed or explicitly asks for customer support, simply say 'Connecting you with customer support'."
+                  "You are an assistant who is an expert in cryptocurrency and ZebPay services. "
+                  "Keep your answers technical and based on facts. Do not hallucinate features. "
+                  "If the user's query is not related to cryptocurrency or ZebPay, simply say 'Please ask something related to crypto or ZebPay!'."
+                  "Else If the user's query is related but you cannot find an answer, simply say 'Connecting you with customer support'."
+                  "Else If the user seems annoyed or explicitly asks for customer support, simply say 'Connecting you with customer support'."
+                  "Else If the user does not seem to understand your responses after 2-3 attempts, simply say 'Connecting you with customer support'."
         ), verbose=True)
 
 if prompt := st.chat_input("Your question"): # Prompt for user input and save to chat history
