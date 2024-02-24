@@ -20,7 +20,7 @@ def load_data():
     with st.spinner(text="Loading and indexing the Streamlit docs – hang tight! This should take 1-2 minutes."):
         reader = SimpleDirectoryReader(input_files=["1.docx", "2.docx", "3.docx", "chat_history.docx"], recursive=True)
         docs = reader.load_data()
-        service_context = ServiceContext.from_defaults(llm=OpenAI(model="gpt-3.5-turbo", temperature=0.1, system_prompt="You are an assistant who is expert in cryptocurrency. Keep your answers technical and based on facts – do not hallucinate features."))
+        service_context = ServiceContext.from_defaults(llm=OpenAI(model="gpt-3.5-turbo", temperature=0.1))
         index = VectorStoreIndex.from_documents(docs, service_context=service_context)
         return index
 
@@ -28,7 +28,13 @@ index = load_data()
 
 if "chat_engine" not in st.session_state.keys(): # Initialize the chat engine
          memory = ChatMemoryBuffer.from_defaults(token_limit=15000)
-         st.session_state.chat_engine = index.as_chat_engine(chat_mode="context", memory=memory, system_prompt="You are a customer support chatbot and an expert in cryptocurrency. If you do not find any answers to the question just say 'Connecting you to customer support'", verbose=True)
+         st.session_state.chat_engine = index.as_chat_engine(chat_mode="context", memory=memory, system_prompt=(
+            "You are an assistant who is an expert in cryptocurrency and ZebPay services. "
+            "Keep your answers technical and based on facts. Do not hallucinate features. "
+            "If the user's query is not related to cryptocurrency or ZebPay, simply say 'Please ask something related to crypto or ZebPay!'."
+            "If the user's query is related but you cannot find an answer, simply say 'Connecting you with customer support'."
+            "If the user seems annoyed or explicitly asks for customer support, simply say 'Connecting you with customer support'."
+        ), verbose=True)
 
 if prompt := st.chat_input("Your question"): # Prompt for user input and save to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
