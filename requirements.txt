@@ -5,3 +5,4 @@ docx2txt
 streamlit
 openai
 nltk
+llama-index-llms-anthropic
