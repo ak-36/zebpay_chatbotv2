@@ -6,6 +6,7 @@ import openai
 from llama_index.core import SimpleDirectoryReader
 from llama_index.core.memory import ChatMemoryBuffer
 from llama_index.core import Settings
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
 st.set_page_config(page_title="ZebPay Chatbot v2", page_icon="🦙", layout="centered", initial_sidebar_state="auto", menu_items=None)
 openai.api_key = st.secrets.openai_key
