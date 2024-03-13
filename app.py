@@ -5,6 +5,7 @@ from llama_index.llms.anthropic import Anthropic
 import openai
 from llama_index.core import SimpleDirectoryReader
 from llama_index.core.memory import ChatMemoryBuffer
+from llama_index.core import Settings
 
 st.set_page_config(page_title="ZebPay Chatbot v2", page_icon="🦙", layout="centered", initial_sidebar_state="auto", menu_items=None)
 openai.api_key = st.secrets.openai_key
@@ -22,8 +23,13 @@ def load_data():
          reader = SimpleDirectoryReader(input_files=["1.docx", "2.docx", "3.docx", "chat_history.docx", "4.docx"], recursive=True)
          docs = reader.load_data()
          #service_context = ServiceContext.from_defaults(llm=OpenAI(model="gpt-4", temperature=0.1))
-         service_context = ServiceContext.from_defaults(llm=Anthropic(api_key=st.secrets.claude_key, model="claude-3-opus-20240229"))
-         index = VectorStoreIndex.from_documents(docs, service_context=service_context)
+         llm=Anthropic(api_key=st.secrets.claude_key, model="claude-3-opus-20240229")
+         embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-base-en-v1.5")
+         Settings.llm = llm
+         Settings.embed_model = embed_model
+         Settings.chunk_size = 512
+         # index = VectorStoreIndex.from_documents(docs, service_context=service_context)
+         index = VectorStoreIndex.from_documents(docs)
          return index
 
 index = load_data()
